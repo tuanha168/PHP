@@ -1,3 +1,17 @@
+<?php
+include 'get.php';
+include 'post.php';
+$myDB = new mysqli('127.0.0.1', 'root', '01642587195', 'Libary');
+if ($myDB->connect_error) {
+  die('Connect Error (' . $myDB->connect_errno . ')' . $myDB->connect_error);
+}
+if (isset($_POST['author']) && isset($_POST['title']) && isset($_POST['year']) && isset($_POST['isbn'])) {
+  addBook($myDB, $_POST['author'], $_POST['title'], $_POST['year'], $_POST['isbn']);
+}
+if (isset($_POST['author_name'])) {
+  addAuthor($myDB, $_POST['author_name']);
+}
+?>
 <div style="display: flex;justify-content: space-evenly;">
   <form action="" style="border:1px solid black; padding:6px" method="get" id="search-form">
     <h2>Search Books</h2>
@@ -21,20 +35,6 @@
     <button>Add</button>
   </form>
 </div>
-<?php
-include 'get.php';
-include 'post.php';
-$myDB = new mysqli('127.0.0.1', 'root', '01642587195', 'Libary');
-if ($myDB->connect_error) {
-  die('Connect Error (' . $myDB->connect_errno . ')' . $myDB->connect_error);
-}
-if (isset($_POST['author']) && isset($_POST['title']) && isset($_POST['year']) && isset($_POST['isbn'])) {
-  addBook($myDB, $_POST['author'], $_POST['title'], $_POST['year'], $_POST['isbn']);
-}
-if (isset($_POST['author_name'])) {
-  addAuthor($myDB, $_POST['author_name']);
-}
-?>
 <div style="display: flex;justify-content: space-evenly;">
   <div>
     <table cellSpacing="2" cellPadding="6" align="center" border="1">
