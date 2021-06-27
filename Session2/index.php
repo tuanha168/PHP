@@ -1,11 +1,11 @@
 <div style="display: flex;justify-content: space-evenly;">
-  <form action="" style="border:1px solid black; padding:6px" method="get">
+  <form action="" style="border:1px solid black; padding:6px" method="get" id="search-form">
     <h2>Search Books</h2>
     <h3>Author: <input type="text" name="author"></h3>
     <h3>Title: <input type="text" name="title"></h3>
     <h3>Year: <input type="text" name="year"></h3>
     <h3>ISBN: <input type="text" name="isbn"></h3>
-    <button>Search</button>
+    <button id="search">Search</button>
   </form>
   <form action="" style="border:1px solid black; padding:6px" method="post">
     <h2>Add Book</h2>
@@ -24,15 +24,14 @@
 <?php
 include 'get.php';
 include 'post.php';
-
 $myDB = new mysqli('127.0.0.1', 'root', '01642587195', 'Libary');
 if ($myDB->connect_error) {
   die('Connect Error (' . $myDB->connect_errno . ')' . $myDB->connect_error);
 }
-if ($_POST['author'] && $_POST['title'] && $_POST['year'] && $_POST['isbn']) {
+if (isset($_POST['author']) && isset($_POST['title']) && isset($_POST['year']) && isset($_POST['isbn'])) {
   addBook($myDB, $_POST['author'], $_POST['title'], $_POST['year'], $_POST['isbn']);
 }
-if ($_POST['author_name']) {
+if (isset($_POST['author_name'])) {
   addAuthor($myDB, $_POST['author_name']);
 }
 ?>
@@ -67,8 +66,9 @@ if ($_POST['author_name']) {
         echo $row["isbn"];
         echo "</td><td><button>Delete</button></td></tr></form>";
       }
-      if ($_POST['bookid']) {
+      if (isset($_POST['bookid'])) {
         deleteBook($myDB, $_POST['bookid']);
+        header("Refresh:0");
       }
       ?>
     </table>
@@ -94,10 +94,24 @@ if ($_POST['author_name']) {
         echo $row["name"];
         echo "</td><td><button>Delete</button></td></tr></form>";
       }
-      if ($_POST['authorid']) {
+      if (isset($_POST['authorid'])) {
         deleteAuthor($myDB, $_POST['authorid']);
+        header("Refresh:0");
       }
       ?>
     </table>
   </div>
 </div>
+<script>
+  function checkEmpty() {
+    var searchForm = document.getElementById('search-form');
+    var allInputs = searchForm.getElementsByTagName('input');
+    for (var i = 0; i < allInputs.length; i++) {
+      var input = allInputs[i];
+      if (input.name && !input.value) {
+        input.name = '';
+      }
+    }
+  }
+  document.getElementById("search").addEventListener("click", checkEmpty);
+</script>
