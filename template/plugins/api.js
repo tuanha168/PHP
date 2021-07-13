@@ -14,7 +14,7 @@ export default function ({ $axios }, inject) {
     getEmployee: () => axios.$get(`/Session3/api/getEmployee.php`),
     addEmployee: (data) => axios.$post(`/Session3/api/employee.php`, data),
     editEmployee: (data) => axios.$put(`/Session3/api/employee.php`, data),
-    deleteEmployee: (id) => axios.$post(`/Session3/api/deleteEmployee.php`, id)
+    deleteEmployee: (data) => axios.$delete(`/Session3/api/employee.php`, data)
   }
   inject('api', api)
 }

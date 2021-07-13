@@ -1,7 +1,11 @@
 <template lang="pug">
 a-modal(v-model="visible" :footer="false")
   h1 Edit Employee
-  a-form-model(:label-col="{ span: 4 }" :wrapper-col="{ span: 18 }")
+  a-form-model(
+    ref="editForm"
+    :label-col="{ span: 4 }"
+    :wrapper-col="{ span: 18 }"
+  )
     a-form-model-item(label="Name" required)
       a-input(v-model="form.name")
     a-form-model-item(label="Email" required)
@@ -31,14 +35,22 @@ export default {
   },
   methods: {
     showModal(record) {
-      this.form = { ...record }
+      this.form = record
       this.visible = true
     },
-    async submitForm() {
-      await this.$api.editEmployee(this.form)
-      this.form = {}
-      this.visible = false
-      this.$emit('edited')
+    submitForm() {
+      this.$refs.editForm.validate((valid) => {
+        if (valid) {
+          alert('submit!')
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+      // await this.$api.editEmployee(this.form)
+      // this.form = {}
+      // this.visible = false
+      // this.$emit('edited')
     }
   }
 }

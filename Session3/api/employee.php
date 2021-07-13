@@ -25,9 +25,21 @@ function editEmployee($data)
   $stmt->bind_param("sssss", $name, $email, $address, $phone, $empid);
   $stmt->execute();
 }
+function deleteEmployee($data)
+{
+  $myDB = $GLOBALS['myDB'];
+  $id = $data["empid"];
+  $query = "DELETE FROM `Employee`.`employee` WHERE (`empid` = ?);";
+  $stmt = $myDB->prepare($query);
+  $stmt->bind_param("s", $id);
+  $stmt->execute();
+}
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   addEmployee(json_decode(file_get_contents("php://input"), true));
 }
 if ($_SERVER["REQUEST_METHOD"] == "PUT") {
   editEmployee(json_decode(file_get_contents("php://input"), true));
+}
+if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
+  deleteEmployee(json_decode(file_get_contents("php://input"), true));
 }
